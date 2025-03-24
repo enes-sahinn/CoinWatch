@@ -13,4 +13,7 @@ interface CoinDao {
 
     @Query("DELETE FROM coin")
     suspend fun clearCoins(): Int
+
+    @Query("UPDATE coin SET isFavorite = :isFavorite WHERE uuid = :coinId")
+    suspend fun updateFavoriteStatus(coinId: String, isFavorite: Boolean)
 }
