@@ -77,8 +77,10 @@ dependencies {
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
 
-    // Charts for Candlestick
-    //implementation("com.github.PhilJay:MPAndroidChart:3.1.0")
+    // Charts
+    implementation(libs.mpandroidchart)
+    implementation(libs.mpandroidchart.vv310)
+
 
     // Testing
     testImplementation(libs.junit)

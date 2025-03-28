@@ -6,9 +6,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-//import com.example.coinwatch.ui.detail.DetailScreen
+import com.example.coinwatch.ui.detail.DetailScreen
 import com.example.coinwatch.ui.home.HomeScreen
-import com.example.coinwatch.data.local.CoinEntity
 
 @Composable
 fun CoinWatchApp() {
@@ -16,7 +15,7 @@ fun CoinWatchApp() {
     NavHost(navController = navController, startDestination = "home") {
         composable("home") {
             HomeScreen(
-                onCoinSelected = { coin: CoinEntity ->
+                onCoinSelected = { coin ->
                     navController.navigate("detail/${coin.uuid}")
                 }
             )
@@ -26,7 +25,7 @@ fun CoinWatchApp() {
             arguments = listOf(navArgument("coinId") { type = NavType.StringType })
         ) { backStackEntry ->
             val coinId = backStackEntry.arguments?.getString("coinId") ?: ""
-           // DetailScreen(coinId = coinId)
+            DetailScreen(coinId = coinId)
         }
     }
 }
