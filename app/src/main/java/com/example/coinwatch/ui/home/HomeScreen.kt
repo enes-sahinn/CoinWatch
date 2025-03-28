@@ -11,7 +11,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.coinwatch.data.local.CoinEntity
-import com.example.coinwatch.R // ic_star_filled ve ic_star_outline ikonları burada
+import com.example.coinwatch.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -26,13 +26,45 @@ fun HomeScreen(
             TopAppBar(title = { Text("Coin Watch") })
         }
     ) { padding ->
-        LazyColumn(contentPadding = padding) {
-            items(coins) { coin ->
-                CoinRow(
-                    coin = coin,
-                    onClick = { onCoinSelected(coin) },
-                    onFavoriteClick = { coinId, currentFav ->
-                        viewModel.onFavoriteClick(coinId, currentFav)
+        Column(modifier = Modifier.padding(padding)) {
+            SortingMenu(viewModel = viewModel)
+            Spacer(modifier = Modifier.height(8.dp))
+            LazyColumn {
+                items(coins) { coin ->
+                    CoinRow(
+                        coin = coin,
+                        onClick = { onCoinSelected(coin) },
+                        onFavoriteClick = { coinId, currentFav ->
+                            viewModel.onFavoriteClick(coinId, currentFav)
+                        }
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun SortingMenu(viewModel: HomeViewModel) {
+    var expanded by remember { mutableStateOf(false) }
+    val currentSort by viewModel.sortType.collectAsState()
+
+    Box {
+        Button(
+            modifier = Modifier.padding(start = 16.dp),
+            onClick = { expanded = true }) {
+            Text("Sort: ${currentSort.name}")
+        }
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false }
+        ) {
+            SortType.values().forEach { sortType ->
+                DropdownMenuItem(
+                    text = { Text(sortType.name) },
+                    onClick = {
+                        viewModel.onSortTypeSelected(sortType)
+                        expanded = false
                     }
                 )
             }
@@ -57,8 +89,6 @@ fun CoinRow(
             Text(text = "${coin.rank}. ${coin.name} (${coin.symbol})")
             Text(text = "Price: ${coin.price}")
         }
-
-        // FAVORİ BUTONU (YILDIZ İKONU)
         IconButton(
             onClick = { onFavoriteClick(coin.uuid, coin.isFavorite) }
         ) {
