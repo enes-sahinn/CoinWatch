@@ -134,11 +134,11 @@ fun ChartCard(historyItems: List<HistoryItem>) {
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         AndroidView(
-            modifier = Modifier.fillMaxSize(), // AndroidView kapsayıcıyı doldurur
+            modifier = Modifier.fillMaxSize(),
 
             factory = { context ->
                 LineChart(context).apply {
-                    // chart settings
+
                     description.isEnabled = false
                     legend.isEnabled = false
                     xAxis.setDrawGridLines(false)
@@ -146,7 +146,6 @@ fun ChartCard(historyItems: List<HistoryItem>) {
                     axisRight.setDrawGridLines(false)
                     setNoDataText("No chart data available")
 
-                    // Grafiğin zoom ve kaydırma özellikleri
                     setPinchZoom(true)
                     setDragEnabled(true)
                     setScaleEnabled(true)
